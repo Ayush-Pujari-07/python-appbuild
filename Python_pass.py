@@ -1,12 +1,12 @@
 def check_passord():
     password = input("Enter the password: ")
 
-    result = []
+    result = {}
 
     if len(password) >= 8:
-        result.append(True)
+        result["length"] = True
     else:
-        result.append(False)
+        result["length"] = False
 
     # Check if it has digit
     digit = False
@@ -14,7 +14,7 @@ def check_passord():
         if i.isdigit():
             digit = True
 
-    result.append(digit)
+    result["digit"] = digit
 
     # Check if it has uppercase
     uppercase = False
@@ -22,16 +22,36 @@ def check_passord():
         if i.isupper():
             uppercase = True
 
-    result.append(uppercase)
+    result["Upper-case"] = uppercase
 
     # Check if it has all
-    if all(result):
+    if all(result.values()):
         print("Strong Password!!")
     else:
         print("Weak Password!!")
 
 
-disct = {"apple": "tstu", "car": "asda", "asdf": "asdaweq", "asdooaf": 112, "open": 123, "pass": 1243, "pole": "pipe"}
+# check_passord()
 
-for i in disct:
-    print(disct[i])
+ids = ["XF345_89", "XER76849", "XA454_55"]
+
+x = 0
+
+for id in ids:
+    if '_' in id:
+        x = x + 1
+print(x)
+
+length = float(input("Enter length: "))
+width = float(input("Enter width: "))
+
+perimeter = (length + width) * 2
+area = length * width
+
+print("Perimeter is", perimeter)
+print("Area is", area)
+
+if perimeter < 14 and area < 8:
+    print("OK")
+else:
+    print("NOT OK")
