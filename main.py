@@ -1,5 +1,16 @@
+def get_todos(filepath="Experimetn/file.txt"):
+    with open(filepath, "r") as file:  # this with context manager method will not make us close
+            # the opened file if we use this way to open a file.
+            todos_local = file.readlines()
+    return todos_local
+
+def write_todos(filepath, todos_arg):
+    with open(filepath, "w") as file:
+        file.writelines(todos_arg)
+
 def todo_():
-    todos = []  # as todos = file.readlines() will create a list
+
+    file_path = "Experimetn/file.txt"
 
     while True:
         # Get user input and strip space characters.
@@ -7,29 +18,29 @@ def todo_():
         user_action = user_action.strip()
 
         # add
-        if 'add' in user_action:
+        if user_action.startswith("add"):
             # todos = input('Enter the todos: ') + "\n"  # This will merge \n with the user inputs todos and wll add a
             # break line to it
-            todo = user_action[4:] + "\n"
+            todo = user_action[4:]
 
             # Open the file and then read the present content in the file and then store it into the file aging
             # by creating a new one.
-            with open("Experimetn/file.txt", "r") as file:  # this with context manager method will not make us close
-                # the opened file if we use this way to open a file.
-                todos = file.readlines()
+            todos = get_todos()
 
-            todos.append(todo)
+            todos.append(todo+ "\n")
 
             # Save the data into a file so the data cant be lost when the interpreter is closed.
-            with open("Experimetn/file.txt", "w") as file:
-                file.writelines(todos)
+            write_todos(file_path, todos)
 
         # Show
-        elif 'show' in user_action:  # if any of the one is matched then will show the output
+        elif user_action.startswith("show"):  # if any of the one is matched then will show the output
 
-            with open("Experimetn/file.txt", 'r') as file:  # by default the open function  mode= read 'r' for file
-                # handling.
-                todos = file.readlines()
+            # with open("Experimetn/file.txt", 'r') as file:  # by default the open function  mode= read 'r' for file
+            #     # handling.
+            #     todos = file.readlines()
+            
+            todos = get_todos()
+            
             # file.close() no need to use close() while using with-context-manager
             # new_items = [item.strip('\n') for item in todos] one of the lists comprehend method for removing \n
             # from the lists items
@@ -39,12 +50,12 @@ def todo_():
                 print(rows)
 
         # Edit
-        elif 'edit' in user_action:
+        elif user_action.startswith("edit"):
+            
             number = int(user_action[5:])
             number = number - 1  # as index count start from Zero
 
-            with open("Experimetn/file.txt", "r") as file:
-                todos = file.readlines()
+            todos = get_todos()
 
             if number < len(todos):
                 new_todo = input("Enter the new todo: ")
@@ -52,31 +63,32 @@ def todo_():
             else:
                 print("Kindly provide the valid number!!")
 
-            with open("Experimetn/file.txt", "w") as file:
-                file.writelines(todos)
-            # print('Got it!!')
+            write_todos(file_path, todos)
+
 
         # Complete
-        elif 'complete' in user_action:
+        elif user_action.startswith("complete"):
             number = int(user_action[9:])
 
-            with open("Experimetn/file.txt", "r") as file:  # writing the code this way will not want us to close
-                # the file it will automatically be,
-                todos = file.readlines()
+            # with open("Experimetn/file.txt", "r") as file:  # writing the code this way will not want us to close
+            #     # the file it will automatically be,
+            #     todos = file.readlines()
+            todos = get_todos()
 
             index = number - 1
             to_remove = todos[index].strip("\n")  # would strip \n from the item that's to be removed from the list.
             todos.pop(index)  # Will delete the finished task from the list.
 
-            with open("Experimetn/file.txt", "w") as file:  # Will Store the unfinished task
-                file.writelines(todos)
+            # with open("Experimetn/file.txt", "w") as file:  # Will Store the unfinished task
+            #     file.writelines(todos)
+            write_todos(file_path, todos)
 
             message = f"Todo '{to_remove}' was removed from the list."
             print(message)
 
             # if  _ in user_action:  # if any other input other than add, dispy, complete, show, exit.
             # print('Hey, you entered an unknown command!!')
-        elif 'exit' in user_action:
+        elif user_action.startswith("exit"):
             break
 
         else:
